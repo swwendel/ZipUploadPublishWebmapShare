@@ -2,6 +2,7 @@
 Title: ZipUploadPublishWebMapShare.py
 Author: Stephanie Wendel
 Date: 4/18/2014
+Updated: 10/15/2015
 Description:
 
 
@@ -22,6 +23,7 @@ zip = "CH_POI.zip"
 filename = shp[:-4]
 outputFolder = r"C:\Temp"
 arcpy.env.workspace = outputFolder
+serviceName = "CH_POI_test"
 
 # Create Token
 token_params ={'username': username,
@@ -58,7 +60,7 @@ maxRecordCount = response_publishParameters['maxRecordCount']
 
 # Publish zip file
 publish_url = "http://www.arcgis.com/sharing/rest/content/users/{0}/publish".format(username)
-publishParameters = '''{'name': 'title'}'''
+publishParameters = json.dumps({'name': serviceName})
 publish_parameters = {'itemID': zipitemid, 'token': token, 'filetype':'shapefile','f': 'json','publishParameters': publishParameters}
 publish_response = requests.post(publish_url, params=publish_parameters)
 services = json.loads(publish_response.text)['services']
